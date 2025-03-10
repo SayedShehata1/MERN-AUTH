@@ -11,6 +11,7 @@ const userSchema = new mongoose.Schema({
     resetOtpExpireAt: { type: Number, default: 0 }
 });
 
+// Create a model from the schema and export it here used || to avoid overwrite model in case it already exists
 const userModel = mongoose.models.user || mongoose.model('user', userSchema);
 
 export default userModel;

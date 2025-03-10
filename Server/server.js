@@ -6,12 +6,18 @@ import connectDB from './config/mongodb.js';
 
 const app = express();
 const port = process.env.PORT || 4000;
+// Connect to the MongoDB database
 connectDB();
 
+// Middlewares for the server
 app.use(express.json());
+// Parse cookies from the HTTP request
 app.use(cookieParser());
+// Enable CORS for the server so that it can be accessed from any frontend
 app.use(cors({ credentials: true }));
 
+// Routes for the server to use for different API endpoints (for example : auth, user, etc.)
 app.get('/', (req, res) => res.send('API Working'));
 
+// Start the server on the specified port
 app.listen(port, () => console.log(`Server Started at Port : ${port}`));
