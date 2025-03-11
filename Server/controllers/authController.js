@@ -1,6 +1,7 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import userModel from '../models/userModel.js';
+import transporter from '../config/nodemailer.js';
 
 export const register = async (req, res) => {
     const { name, email, password } = req.body;
@@ -44,7 +45,17 @@ export const register = async (req, res) => {
             maxAge: 7 * 24 * 60 * 60 * 1000 // set the cookie to expire in 7 days
         });
 
-        // Send a success message
+        // Sending welcome email
+        const mailOptions = {
+            from: process.env.SENDER_EMAIL,
+            to: email,
+            subject: 'Welcome to Sayed Auth',
+            text: `Welcome to Sayed Auth Website! Your account has been created with the email address: ${email}`
+        };
+
+        await transporter.sendMail(mailOptions);
+
+        // Send a success message after sending the welcome email
         return res.json({
             success: true,
             message: 'User registered successfully'
