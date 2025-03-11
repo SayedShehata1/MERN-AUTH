@@ -244,16 +244,18 @@ export const verifyEmail = async (req, res) => {
     }
 };
 
-// // Check if user is authenticated
-// export const isAuthenticated = async (req, res) => {
-//     try {
-//         return json({
-//             success: true
-//         });
-//     } catch (error) {
-//         res.json({
-//             success: false,
-//             message: error.message
-//         });
-//     }
-// };
+// Check if user is authenticated
+export const isAuthenticated = async (req, res) => {
+    try {
+        // will be authenticated only if the user is logged in (token is present in the cookie)
+        // it will happen when the middleware userAuth will be called successfully
+        return res.json({
+            success: true
+        });
+    } catch (error) {
+        res.json({
+            success: false,
+            message: error.message
+        });
+    }
+};
