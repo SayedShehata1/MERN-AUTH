@@ -13,6 +13,7 @@ import userAuth from '../middleware/userAuth.js';
 
 const authRouter = express.Router();
 
+// post here refer to the method of the request (GET, POST, PUT, DELETE)
 authRouter.post('/register', register);
 authRouter.post('/login', login);
 authRouter.post('/logout', logout);
