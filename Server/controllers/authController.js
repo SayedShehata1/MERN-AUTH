@@ -145,3 +145,115 @@ export const logout = async (req, res) => {
         });
     }
 };
+
+// Send Verification OTP to the user's Email
+export const sendVerifyOtp = async (req, res) => {
+    try {
+        // Get the userId from the request body (sent by the middleware)
+        const { userId } = req.body;
+
+        const user = await userModel.findById(userId);
+
+        if (user.isAccountVerified) {
+            return res.json({
+                success: false,
+                message: 'Account Already Verified'
+            });
+        }
+
+        // Generate a 6 digit OTP
+        const otp = String(Math.floor(100000 + Math.random() * 900000));
+        user.verifyOtp = otp;
+        // Set the OTP to expire in 24 hours
+        user.verifyOtpExpireAt = Date.now() + 24 * 60 * 60 * 1000;
+
+        // Save the user with the new OTP
+        await user.save();
+
+        // Send the OTP to the user's email
+        const mailOptions = {
+            from: process.env.SENDER_EMAIL,
+            to: user.email,
+            subject: 'Account Verification OTP',
+            text: `Your OTP is ${otp}. Verify your account using this OTP`
+        };
+
+        await transporter.sendMail(mailOptions);
+
+        res.json({
+            success: true,
+            message: 'Verification OTP Sent on Email'
+        });
+    } catch (error) {
+        res.json({
+            success: false,
+            message: error.message
+        });
+    }
+};
+
+// Verify User OTP Account
+export const verifyEmail = async (req, res) => {
+    const { userId, otp } = req.body;
+
+    if (!userId || !otp) {
+        return res.json({
+            success: false,
+            message: 'Missing Details'
+        });
+    }
+
+    try {
+        const user = await userModel.findById(userId);
+        if (!user) {
+            return res.json({
+                success: false,
+                message: 'User Not Found'
+            });
+        }
+        if (user.verifyOtp === '' || user.verifyOtp !== otp) {
+            return res.json({
+                success: false,
+                message: 'Invalid OTP'
+            });
+        }
+
+        if (user.verifyOtpExpireAt < Date.now()) {
+            return res.json({
+                success: false,
+                message: 'OTP Expired'
+            });
+        }
+
+        // Set the user account to verified and clear the OTP fields
+        user.isAccountVerified = true;
+        user.verifyOtp = '';
+        user.verifyOtpExpireAt = 0;
+        // Save the user to the database
+        await user.save();
+
+        return res.json({
+            success: true,
+            message: 'Email Verified Successfully'
+        });
+    } catch (error) {
+        return res.json({
+            success: false,
+            message: error.message
+        });
+    }
+};
+
+// // Check if user is authenticated
+// export const isAuthenticated = async (req, res) => {
+//     try {
+//         return json({
+//             success: true
+//         });
+//     } catch (error) {
+//         res.json({
+//             success: false,
+//             message: error.message
+//         });
+//     }
+// };
