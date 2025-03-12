@@ -11,12 +11,15 @@ const port = process.env.PORT || 4000;
 // Connect to the MongoDB database
 connectDB();
 
+// allowed origin to work with my local host due to CORS
+const allowedOrigins = ['http://localhost:5173'];
+
 // Middlewares for the server
 app.use(express.json());
 // Parse cookies from the HTTP request
 app.use(cookieParser());
 // Enable CORS for the server so that it can be accessed from any frontend
-app.use(cors({ credentials: true }));
+app.use(cors({ origin: allowedOrigins, credentials: true }));
 
 // Routes for the server to use for different API endpoints (for example : auth, user, etc.)
 app.get('/', (req, res) => res.send('API Working'));
