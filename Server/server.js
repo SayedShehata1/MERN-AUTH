@@ -12,7 +12,10 @@ const port = process.env.PORT || 4000;
 connectDB();
 
 // allowed origin to work with my local host due to CORS
-const allowedOrigins = ['http://localhost:5173'];
+const allowedOrigins = [
+    'http://localhost:5173',
+    'https://mern-auth-green.vercel.app'
+];
 
 // Middlewares for the server
 app.use(express.json());
