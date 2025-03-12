@@ -17,8 +17,9 @@
 A complete authentication system built with the MERN stack, including email
 verification and password reset using a secure 6-digit OTP.
 
-![Preview](./Client/src/assets/preview-1.png)
 ![Preview](./Client/src/assets/preview-2.png)
+![Preview](./Client/src/assets/preview-4.png)
+![Preview](./Client/src/assets/preview-1.png)
 ![Preview](./Client/src/assets/preview-3.png)
 
 ### Features
@@ -29,6 +30,8 @@ verification and password reset using a secure 6-digit OTP.
 -   Fully functional authentication system with protected routes
 -   Backend API built with Express and MongoDB
 -   Frontend UI built with React and Tailwind CSS
+
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 ### Built With
 
