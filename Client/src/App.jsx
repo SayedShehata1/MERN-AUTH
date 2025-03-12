@@ -1,9 +1,19 @@
 import React from 'react';
+import { Route, Routes } from 'react-router-dom';
+import Home from './pages/Home';
+import Login from './pages/Login';
+import EmailVerify from './pages/EmailVerify';
+import ResetPassword from './pages/ResetPassword';
 
 const App = () => {
     return (
-        <div className="text-4xl text-center">
-            <h1>React App</h1>
+        <div>
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/email-verify" element={<EmailVerify />} />
+                <Route path="/reset-password" element={<ResetPassword />} />
+            </Routes>
         </div>
     );
 };
